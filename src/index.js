@@ -1,8 +1,7 @@
 var keys = require("keys"),
     isNullOrUndefined = require("is_null_or_undefined"),
     fastBindThis = require("fast_bind_this"),
-    isObjectLike = require("is_object_like"),
-    isLength = require("is_length");
+    isArrayLike = require("is_array_like");
 
 
 function reduceRightArray(array, callback, accumulator, initFromArray) {
@@ -40,5 +39,7 @@ function reduceRightObject(object, callback, accumulator, initFromArray) {
 
 module.exports = function reduceRight(object, callback, accumulator, thisArg) {
     callback = isNullOrUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 3);
-    return (isObjectLike(object) && isLength(object.length)) ? reduceRightArray(object, callback, arguments.length < 3) : reduceRightObject(object, callback, arguments.length < 3);
+    return isArrayLike(object) ?
+        reduceRightArray(object, callback, arguments.length < 3) :
+        reduceRightObject(object, callback, arguments.length < 3);
 };
